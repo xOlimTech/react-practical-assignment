@@ -1,20 +1,22 @@
-import {useEffect} from 'react';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Login from './components/Login';
+import MainScreen from './components/MainScreen';
 
-function App() {
+const App = () => {
+    const currentUser = useSelector((state) => state.user.currentUser);
 
-  useEffect(() => {
-    // TEST API, it might be removed
-    fetch('http://localhost:8080/live').then(res => res.json()).then(res => {
-      console.log('API CONNECTION IS OK');
-    }).catch((e) => console.error('API CONNECTION FAILED, PLEASE CHECK SERVER APP AND TRY AGAIN'))
-  }, []);
-
-  return (
-    <div className="App">
-      TASK IMPLEMENTATION HERE
-    </div>
-  );
-}
+    return (
+        <Router>
+            <div>
+                <Routes>
+                    <Route path="/login" element={currentUser ? <Navigate to="/" /> : <Login />}/>
+                    <Route path="/" element={currentUser ? <MainScreen /> : <Navigate to="/login" />}/>
+                </Routes>
+            </div>
+        </Router>
+    );
+};
 
 export default App;

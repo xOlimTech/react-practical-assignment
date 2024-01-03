@@ -1,17 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { thunk } from 'redux-thunk';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import userReducer from './reducers/userReducer'; // Импортируем userReducer
+import postReducer from './reducers/postReducer'; // Импортируем postReducer
+import commentReducer from './reducers/commentReducer'; // Импортируем commentReducer
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const rootReducer = combineReducers({
+    user: userReducer, // Добавляем userReducer в корневой редюсер
+    post: postReducer, // Добавляем postReducer в корневой редюсер
+    comment: commentReducer, // Добавляем commentReducer в корневой редюсер
+});
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(thunk))
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);
