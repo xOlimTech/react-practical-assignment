@@ -16,3 +16,6 @@ export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const LIKE_COMMENT = 'LIKE_COMMENT';
 export const DISLIKE_COMMENT = 'DISLIKE_COMMENT';
 export const MAIN_URL = 'localhost:3000';
+
+export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+export const FETCH_POSTS = 'FETCH_POSTS';

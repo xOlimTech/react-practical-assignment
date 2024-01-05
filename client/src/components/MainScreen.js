@@ -1,7 +1,8 @@
+// MainScreen.js
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPosts } from '../actions/postActions';
-import Post from './Post';
+import Post from "./Post";
 
 const MainScreen = () => {
     const dispatch = useDispatch();
@@ -11,7 +12,16 @@ const MainScreen = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(fetchPosts(currentPage));
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchPosts(currentPage));
+            } catch (error) {
+                // Обработка ошибок при запросе
+                console.error('Error fetching posts:', error);
+            }
+        };
+
+        fetchData();
     }, [dispatch, currentPage]);
 
     const handlePageChange = (page) => {

@@ -1,17 +1,19 @@
 // api.js
-const MAIN_URL = 'localhost:3000'; // Замените 'your_server_base_url' на базовый URL вашего сервера
+const MAIN_URL = 'http://localhost:3000'; // Замените это на ваш URL сервера
 
 const headers = {
     'Content-Type': 'application/json',
-    // Добавьте другие необходимые заголовки, такие как авторизация, если необходимо
 };
 
 const handleResponse = async (response) => {
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Something went wrong');
+    const contentType = response.headers.get('content-type');
+
+    if (contentType && contentType.indexOf('application/json') !== -1) {
+        return response.json();
+    } else {
+        const text = await response.text();
+        return text;
     }
-    return response.json();
 };
 
 export const loginUser = async (username) => {
@@ -49,4 +51,29 @@ export const editPost = async (postId, postData) => {
     return handleResponse(response);
 };
 
-// Добавьте другие методы для взаимодействия с сервером в соответствии с вашими требованиями
+export const deletePost = async (postId) => {
+    const response = await fetch(`${MAIN_URL}/post/${postId}`, {
+        method: 'DELETE',
+        headers,
+    });
+
+    return handleResponse(response);
+};
+
+export const likePost = async (postId) => {
+    const response = await fetch(`${MAIN_URL}/post/like/${postId}`, {
+        method: 'PUT',
+        headers,
+    });
+
+    return handleResponse(response);
+};
+
+export const dislikePost = async (postId) => {
+    const response = await fetch(`${MAIN_URL}/post/dislike/${postId}`, {
+        method: 'PUT',
+        headers,
+    });
+
+    return handleResponse(response);
+};
