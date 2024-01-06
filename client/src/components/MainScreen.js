@@ -1,9 +1,8 @@
-// MainScreen.js
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import Post from './Post';
 import Modal from './Modal';
-import { createPost, fetchPosts } from '../actions/postActions';
+import {createPost, fetchPosts} from '../actions/postActions';
 
 const MainScreen = () => {
     const dispatch = useDispatch();
@@ -19,10 +18,18 @@ const MainScreen = () => {
         setIsModalOpen(false);
     };
 
-    const handleCreatePost = (postData) => {
-        dispatch(createPost(postData));
-        closeModal();
-    };
+    const handleCreatePost = useCallback(
+        (postData) => {
+            dispatch(createPost(postData));
+            closeModal();
+        },
+        [dispatch]
+    );
+
+    const handleLogout = () => {
+        // Очистка состояния при выходе
+        dispatch({type: 'LOGOUT_USER'});
+    }
 
     useEffect(() => {
         // Загрузка постов при монтировании компонента
@@ -34,12 +41,14 @@ const MainScreen = () => {
             <h1>Main Screen</h1>
             {currentUser && <p>Hello, {currentUser}!</p>}
             <button onClick={openModal}>Create Post</button>
+            <button onClick={handleLogout}>Logout</button>
+            <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleCreatePost}/>
 
-            {posts.map((post) => (
-                <Post key={post.id} post={post} />
+            <p>All Posts: {posts.length}</p>
+            {posts.reverse().map((post) => (
+                <Post key={post.id} post={post}/>
             ))}
 
-            <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleCreatePost} />
         </div>
     );
 };

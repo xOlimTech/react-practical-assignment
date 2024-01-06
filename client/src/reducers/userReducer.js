@@ -1,5 +1,5 @@
 //userReducer.js
-import { LOGIN_USER, LOGOUT_USER } from '../services/actionTypes';
+import { LOGIN_USER, LOGOUT_USER } from '../services/const';
 
 const initialState = {
     currentUser: null,

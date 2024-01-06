@@ -5,7 +5,7 @@ import {
     DELETE_COMMENT,
     LIKE_COMMENT,
     DISLIKE_COMMENT,
-} from '../services/actionTypes';
+} from '../services/const';
 
 const initialState = {
     comments: [],

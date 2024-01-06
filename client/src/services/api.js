@@ -1,11 +1,13 @@
 // api.js
-const MAIN_URL = 'http://localhost:8080/';
+import {MAIN_URL} from "./const";
+
 const headers = {'Content-Type': 'application/json'};
 
 const createPost = async (post) => {
     const url = MAIN_URL + `post/`;
     const method = 'POST';
-    return makeRequest(url, method, post);
+    const response = await makeRequest(url, method, post);
+    return response.result;
 };
 
 const updatePost = async (postId, updates) => {
@@ -26,10 +28,10 @@ const getPostsByPage = async (pageNumber) => {
     return makeRequest(url, method);
 };
 
-const deletePost = async (postId) => {
+const deletePost = async (postId, options) => {
     const url = MAIN_URL + `post/${postId}`;
     const method = 'DELETE';
-    return makeRequest(url, method);
+    return makeRequest(url, method, options);
 };
 
 const getAllPosts = async () => {
@@ -61,7 +63,6 @@ export const likePost = async (postId) => {
         method: 'PUT',
         headers,
     });
-
     return handleResponse(response);
 };
 
@@ -70,7 +71,6 @@ export const dislikePost = async (postId) => {
         method: 'PUT',
         headers,
     });
-
     return handleResponse(response);
 };
 
@@ -106,22 +106,27 @@ const handleResponse = async (response) => {
     }
     const data = await response.json();
     return data;
-};
+}
 
-const makeRequest = async (url, method, body) => {
+const makeRequest = async (url, method, body = null) => {
     const options = {
         method,
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',},
     };
     if (body) {
         options.body = JSON.stringify(body);
     }
-    const response = await fetch(url, options);
-    if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+        return response.json();
+    } catch (error) {
+        throw new Error(`Error making request: ${error.message}`);
     }
-    return response.json();
 };
+
 export {
     createPost,
     updatePost,

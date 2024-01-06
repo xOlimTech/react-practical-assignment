@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from '../services/actionTypes';
+import { LOGIN_USER, LOGOUT_USER } from '../services/const';
 
 export const loginUser = (username) => ({
     type: LOGIN_USER,

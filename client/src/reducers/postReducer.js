@@ -4,14 +4,14 @@ import {
     EDIT_POST,
     DELETE_POST,
     LIKE_POST,
-    DISLIKE_POST,
-} from '../services/actionTypes';
+    DISLIKE_POST, FETCH_POSTS_SUCCESS, LOGOUT_USER,
+} from '../services/const';
 
 const initialState = {
     posts: [],
-    totalPages: 0,
-    total: 0,
-    page: 1,
+    // totalPages: 0,
+    // total: 0,
+    // page: 1,
 };
 
 const postReducer = (state = initialState, action) => {
@@ -41,6 +41,16 @@ const postReducer = (state = initialState, action) => {
                     post.id === action.payload.id ? action.payload : post
                 ),
             };
+        case FETCH_POSTS_SUCCESS:
+            return {
+                ...state,
+                posts: action.payload,
+            };
+        case LOGOUT_USER:
+            return {
+                ...state,
+                posts: [],
+            }
         default:
             return state;
     }
