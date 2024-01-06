@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Post from './Post';
 import Modal from './Modal';
 import {createPost, fetchPosts} from '../actions/postActions';
+import {logoutUser} from "../actions/userActions";
 
 const MainScreen = () => {
     const dispatch = useDispatch();
@@ -27,12 +28,10 @@ const MainScreen = () => {
     );
 
     const handleLogout = () => {
-        // Очистка состояния при выходе
-        dispatch({type: 'LOGOUT_USER'});
+        dispatch(logoutUser());
     }
 
     useEffect(() => {
-        // Загрузка постов при монтировании компонента
         dispatch(fetchPosts());
     }, [dispatch]);
 

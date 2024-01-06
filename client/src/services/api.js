@@ -59,7 +59,7 @@ const getComments = async () => {
 };
 
 export const likePost = async (postId) => {
-    const response = await fetch(`${MAIN_URL}/post/like/${postId}`, {
+    const response = await fetch(MAIN_URL + `post/like/${postId}`, {
         method: 'PUT',
         headers,
     });
@@ -67,7 +67,7 @@ export const likePost = async (postId) => {
 };
 
 export const dislikePost = async (postId) => {
-    const response = await fetch(`${MAIN_URL}/post/dislike/${postId}`, {
+    const response = await fetch(MAIN_URL + `post/dislike/${postId}`, {
         method: 'PUT',
         headers,
     });

@@ -9,9 +9,6 @@ import {
 
 const initialState = {
     posts: [],
-    // totalPages: 0,
-    // total: 0,
-    // page: 1,
 };
 
 const postReducer = (state = initialState, action) => {

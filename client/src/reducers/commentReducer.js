@@ -4,7 +4,7 @@ import {
     EDIT_COMMENT,
     DELETE_COMMENT,
     LIKE_COMMENT,
-    DISLIKE_COMMENT,
+    DISLIKE_COMMENT, COMMENT_FAILURE,
 } from '../services/const';
 
 const initialState = {
@@ -18,7 +18,11 @@ const commentReducer = (state = initialState, action) => {
                 ...state,
                 comments: [...state.comments, action.payload],
             };
-
+        case COMMENT_FAILURE:
+            return {
+                ...state,
+                comments: action.payload,
+            };
         case EDIT_COMMENT:
             return {
                 ...state,
