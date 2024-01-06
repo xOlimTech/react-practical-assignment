@@ -18,4 +18,5 @@ export const DISLIKE_COMMENT = 'DISLIKE_COMMENT';
 export const MAIN_URL = 'localhost:3000';
 
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 export const FETCH_POSTS = 'FETCH_POSTS';

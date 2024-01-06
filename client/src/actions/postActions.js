@@ -5,24 +5,29 @@ import {
     DELETE_POST,
     LIKE_POST,
     DISLIKE_POST,
-    FETCH_POSTS, // Добавлен экспорт FETCH_POSTS
+    FETCH_POSTS_SUCCESS,
+    FETCH_POSTS_FAILURE,
 } from '../services/actionTypes';
 import * as api from '../services/api';
+// import {getAllPosts} from '../services/api';
 
-export const createPost = (postData) => async (dispatch, getState) => {
-    const { user } = getState();
+export const createPost = (post) => async (dispatch, getState) => {
+    const { username } = getState().user;
+    console.log("postData", post);
     try {
-        const response = await api.createPost(postData);
+        const response = await api.createPost({ ...post, username });
         dispatch({ type: CREATE_POST, payload: response });
+        dispatch(fetchPosts());
     } catch (error) {
         console.error('Error creating post:', error);
     }
 };
 
-export const editPost = (postId, postData) => async (dispatch, getState) => {
-    const { user } = getState();
+
+export const editPost = (postId, post) => async (dispatch, getState) => {
+    // const { username } = getState();
     try {
-        const response = await api.editPost(postId, postData);
+        const response = await api.updatePost(postId, post);
         dispatch({ type: EDIT_POST, payload: response });
     } catch (error) {
         console.error('Error editing post:', error);
@@ -30,7 +35,7 @@ export const editPost = (postId, postData) => async (dispatch, getState) => {
 };
 
 export const deletePostAction = (postId) => async (dispatch, getState) => {
-    const { user } = getState();
+    // const { username } = getState();
     try {
         const response = await api.deletePost(postId);
         dispatch({ type: DELETE_POST, payload: response });
@@ -57,12 +62,11 @@ export const dislikePostAction = (postId) => async (dispatch) => {
     }
 };
 
-
-export const fetchPosts = (pageNumber) => async (dispatch) => {
+export const fetchPosts = () => async (dispatch) => {
     try {
-        const response = await api.fetchPosts(pageNumber); // Обновлено использование метода api
-        dispatch({ type: FETCH_POSTS, payload: response });
+        const response = await api.getAllPosts();
+        dispatch({ type: FETCH_POSTS_SUCCESS, payload: response });
     } catch (error) {
-        console.error('Error fetching posts:', error);
+        dispatch({ type: FETCH_POSTS_FAILURE, payload: error.message });
     }
 };

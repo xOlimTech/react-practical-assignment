@@ -1,63 +1,59 @@
 // api.js
-const MAIN_URL = 'http://localhost:3000'; // Замените это на ваш URL сервера
+const MAIN_URL = 'http://localhost:8080/';
+const headers = {'Content-Type': 'application/json'};
 
-const headers = {
-    'Content-Type': 'application/json',
+const createPost = async (post) => {
+    const url = MAIN_URL + `post/`;
+    const method = 'POST';
+    return makeRequest(url, method, post);
 };
 
-const handleResponse = async (response) => {
-    const contentType = response.headers.get('content-type');
-
-    if (contentType && contentType.indexOf('application/json') !== -1) {
-        return response.json();
-    } else {
-        const text = await response.text();
-        return text;
-    }
+const updatePost = async (postId, updates) => {
+    const url = MAIN_URL + `post/${postId}`;
+    const method = 'PUT';
+    return makeRequest(url, method, updates);
 };
 
-export const loginUser = async (username) => {
-    const response = await fetch(`${MAIN_URL}/login`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ username }),
-    });
-
-    return handleResponse(response);
+const filterPostsByKeyword = async (keyWord) => {
+    const url = MAIN_URL + `post/search/${keyWord}`;
+    const method = 'GET';
+    return makeRequest(url, method);
 };
 
-export const fetchPosts = async (pageNumber) => {
-    const response = await fetch(`${MAIN_URL}/post/page/${pageNumber}`);
-    return handleResponse(response);
+const getPostsByPage = async (pageNumber) => {
+    const url = MAIN_URL + `post/page/${pageNumber}`;
+    const method = 'GET';
+    return makeRequest(url, method);
 };
 
-export const createPost = async (postData) => {
-    const response = await fetch(`${MAIN_URL}/post`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(postData),
-    });
-
-    return handleResponse(response);
+const deletePost = async (postId) => {
+    const url = MAIN_URL + `post/${postId}`;
+    const method = 'DELETE';
+    return makeRequest(url, method);
 };
 
-export const editPost = async (postId, postData) => {
-    const response = await fetch(`${MAIN_URL}/post/${postId}`, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(postData),
-    });
-
-    return handleResponse(response);
+const getAllPosts = async () => {
+    const url = MAIN_URL + 'post/';
+    const method = 'GET';
+    return makeRequest(url, method);
 };
 
-export const deletePost = async (postId) => {
-    const response = await fetch(`${MAIN_URL}/post/${postId}`, {
-        method: 'DELETE',
-        headers,
-    });
+const getPost = async (postId) => {
+    const url = MAIN_URL + `post/${postId}`;
+    const method = 'GET';
+    return makeRequest(url, method);
+};
 
-    return handleResponse(response);
+const getComment = async (commentId) => {
+    const url = MAIN_URL + `comment/${commentId}`;
+    const method = 'GET';
+    return makeRequest(url, method);
+};
+
+const getComments = async () => {
+    const url = MAIN_URL + 'comment/';
+    const method = 'GET';
+    return makeRequest(url, method);
 };
 
 export const likePost = async (postId) => {
@@ -76,4 +72,68 @@ export const dislikePost = async (postId) => {
     });
 
     return handleResponse(response);
+};
+
+const uploadPostPicture = async (postId, file) => {
+    const url = MAIN_URL + `post/${postId}/picture`;
+    const method = 'POST';
+    const formData = new FormData();
+    formData.append('picture', file);
+    return makeRequest(url, method, formData);
+};
+
+const createComment = async (comment) => {
+    const url = MAIN_URL + 'comment/';
+    const method = 'POST';
+    return makeRequest(url, method, comment);
+};
+
+const updateComment = async (commentId, updates) => {
+    const url = MAIN_URL + `comment/${commentId}`;
+    const method = 'PUT';
+    return makeRequest(url, method, updates);
+};
+
+const deleteComment = async (commentId) => {
+    const url = MAIN_URL + `comment/${commentId}`;
+    const method = 'DELETE';
+    return makeRequest(url, method);
+};
+
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+};
+
+const makeRequest = async (url, method, body) => {
+    const options = {
+        method,
+        headers: {'Content-Type': 'application/json'},
+    };
+    if (body) {
+        options.body = JSON.stringify(body);
+    }
+    const response = await fetch(url, options);
+    if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+    }
+    return response.json();
+};
+export {
+    createPost,
+    updatePost,
+    filterPostsByKeyword,
+    getPostsByPage,
+    deletePost,
+    uploadPostPicture,
+    createComment,
+    updateComment,
+    deleteComment,
+    getAllPosts,
+    getPost,
+    getComment,
+    getComments,
 };

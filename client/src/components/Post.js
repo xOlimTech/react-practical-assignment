@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     // editPost,
     deletePostAction,
-    likePostAction, // Обновлен импорт
-    dislikePostAction, // Обновлен импорт
+    likePostAction,
+    dislikePostAction,
 } from '../actions/postActions';
 
 const Post = ({ post }) => {
@@ -17,15 +17,15 @@ const Post = ({ post }) => {
     };
 
     const handleDelete = () => {
-        dispatch(deletePostAction(post.id)); // Используем deletePostAction вместо deletePost
+        dispatch(deletePostAction(post.id));
     };
 
     const handleLike = () => {
-        dispatch(likePostAction(post.id)); // Используем likePostAction вместо likePost
+        dispatch(likePostAction(post.id));
     };
 
     const handleDislike = () => {
-        dispatch(dislikePostAction(post.id)); // Используем dislikePostAction вместо dislikePost
+        dispatch(dislikePostAction(post.id));
     };
 
     return (
