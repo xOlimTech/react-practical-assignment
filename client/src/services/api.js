@@ -16,6 +16,12 @@ const updatePost = async (postId, updates) => {
     return makeRequest(url, method, updates);
 };
 
+const deletePost = async (postId, options) => {
+    const url = MAIN_URL + `post/${postId}`;
+    const method = 'DELETE';
+    return makeRequest(url, method, options);
+};
+
 const filterPostsByKeyword = async (keyWord) => {
     const url = MAIN_URL + `post/search/${keyWord}`;
     const method = 'GET';
@@ -28,11 +34,11 @@ const getPostsByPage = async (pageNumber) => {
     return makeRequest(url, method);
 };
 
-const deletePost = async (postId, options) => {
-    const url = MAIN_URL + `post/${postId}`;
-    const method = 'DELETE';
-    return makeRequest(url, method, options);
-};
+// const getPostsByPage = async (pageNumber, postsPerPage) => {
+//     const url = MAIN_URL + `post/page/${pageNumber}?postsPerPage=${postsPerPage}`;
+//     const method = 'GET';
+//     return makeRequest(url, method);
+// };
 
 const getAllPosts = async () => {
     const url = MAIN_URL + 'post/';

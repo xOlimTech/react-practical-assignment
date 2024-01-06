@@ -1,4 +1,5 @@
 export const MAIN_URL = 'http://localhost:8080/';
+
 // User actions
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -12,6 +13,7 @@ export const DISLIKE_POST = 'DISLIKE_POST';
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
 export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
 export const FETCH_POSTS = 'FETCH_POSTS';
+export const UPDATE_PAGE_NUMBER = 'UPDATE_PAGE_NUMBER';
 
 // Comment actions
 export const CREATE_COMMENT = 'CREATE_COMMENT';

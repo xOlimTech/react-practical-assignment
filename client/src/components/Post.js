@@ -147,11 +147,11 @@ const Post = ({ post }) => {
                         />
                         {editingCommentId ? (
                             <>
-                                <button onClick={handleSaveEditComment}>Save Edit</button>
-                                <button onClick={() => setEditingCommentId(null)}>Cancel Edit</button>
+                                <button onClick={handleSaveEditComment}>Save</button>
+                                <button onClick={() => setEditingCommentId(null)}>Cancel</button>
                             </>
                         ) : (
-                            <button onClick={handleComment}>Comment</button>
+                            <button onClick={handleComment}>Add comment</button>
                         )}
                     </div>
                 </>
