@@ -4,7 +4,8 @@ import {
     EDIT_COMMENT,
     DELETE_COMMENT,
     LIKE_COMMENT,
-    DISLIKE_COMMENT, COMMENT_FAILURE,
+    DISLIKE_COMMENT,
+    COMMENT_FAILURE,
 } from '../services/const';
 
 const initialState = {

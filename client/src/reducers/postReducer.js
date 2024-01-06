@@ -43,11 +43,6 @@ const postReducer = (state = initialState, action) => {
                 ...state,
                 posts: action.payload,
             };
-        case LOGOUT_USER:
-            return {
-                ...state,
-                posts: [],
-            };
         default:
             return state;
     }

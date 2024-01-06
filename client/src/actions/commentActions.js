@@ -8,22 +8,6 @@
 // } from '../services/actionTypes';
 
 //
-// // Здесь необходимо подставить соответствующие API-запросы
-//
-// export const createCommentAction = (commentData) => async (dispatch) => {
-//     try {
-//         // Здесь вызывайте соответствующий API-метод для создания комментария
-//         const response = await api.createComment(commentData);
-//         dispatch({ type: CREATE_COMMENT, payload: response });
-//     } catch (error) {
-//         console.error('Error creating comment:', error);
-//     }
-// };
-//
-
-//
-
-//
 // export const likeCommentAction = (commentId) => async (dispatch) => {
 //     try {
 //         // Здесь вызывайте соответствующий API-метод для лайка комментария
@@ -76,7 +60,6 @@ export const editComment = (commentId, commentData) => async (dispatch) => {
 };
 export const deleteComment = (commentId) => async (dispatch) => {
     try {
-        // Здесь вызывайте соответствующий API-метод для удаления комментария
         const response = await api.deleteComment(commentId);
         dispatch({ type: DELETE_COMMENT, payload: response });
         dispatch(fetchPosts());

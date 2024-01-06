@@ -57,21 +57,16 @@ const Post = ({ post }) => {
     };
 
     const handleComment = () => {
-        // Создайте новый комментарий и отправьте на сервер
         const commentData = {
             text: commentText,
             postId: post.id,
             username: currentUser,
         };
-
         dispatch(createComment(commentData));
-
-        // Очистите поле ввода комментария
         setCommentText('');
     };
 
     const handleEditComment = (commentId, commentText) => {
-        // Переключение в режим редактирования комментария
         setEditingCommentId(commentId);
         setCommentText(commentText);
     };
@@ -100,7 +95,6 @@ const Post = ({ post }) => {
     const handleDeleteComment = (commentId) => {
         dispatch(deleteComment(commentId));
     };
-
     return (
         <div>
             {isEditing ? (

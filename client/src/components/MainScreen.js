@@ -41,7 +41,7 @@ const MainScreen = () => {
             await dispatch(fetchPosts(newPage, postsPerPage));
             setPageNumber(newPage);
         } catch (error) {
-            console.error('Ошибка при изменении страницы:', error.message);
+            console.error('Error when changing a page:', error.message);
         }
     };
 

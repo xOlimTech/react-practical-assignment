@@ -61,21 +61,6 @@ export const dislikePostAction = (postId) => async (dispatch) => {
     }
 };
 
-// export const fetchPosts = () => async (dispatch) => {
-//     try {
-//         const response = await axios.get(MAIN_URL + `post/`);
-//         if (response.data.success) {
-//             dispatch({
-//                 type: FETCH_POSTS_SUCCESS,
-//                 payload: response.data.result,
-//             });
-//         } else {
-//             console.error('Ошибка при получении постов:', response.data.error);
-//         }
-//     } catch (error) {
-//         console.error('Ошибка при выполнении запроса:', error.message);
-//     }
-// };
 export const fetchPosts = (pageNumber, postsPerPage) => async (dispatch) => {
     try {
         const response = await axios.get(MAIN_URL + `post/page/${pageNumber}?perPage=${postsPerPage}`);
