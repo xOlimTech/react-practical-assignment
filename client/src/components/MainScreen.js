@@ -7,22 +7,19 @@ import {logoutUser} from "../actions/userActions";
 
 const MainScreen = () => {
     const dispatch = useDispatch();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [pageNumber, setPageNumber] = useState(1);
-    const postsPerPage = 3;
     const currentUser = useSelector((state) => state.user.currentUser);
     const posts = useSelector((state) => state.post.posts);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const postsPerPage = 9;
 
     const openModal = () => {
-        setIsModalOpen(true)
-    };
-    const closeModal = () => {
-        setIsModalOpen(false)
+        setIsModalOpen(true);
     };
 
-    useEffect(() => {
-        dispatch(fetchPosts(pageNumber, postsPerPage));
-    }, [dispatch, pageNumber, postsPerPage]);
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleCreatePost = useCallback(
         (postData) => {
@@ -35,15 +32,13 @@ const MainScreen = () => {
     const handleLogout = () => {
         dispatch(logoutUser());
     }
-
-    const handlePageChange = async (newPage) => {
-        try {
-            await dispatch(fetchPosts(newPage, postsPerPage));
-            setPageNumber(newPage);
-        } catch (error) {
-            console.error('Error when changing a page:', error.message);
-        }
+    const handlePageChange = (newPageNumber) => {
+        setPageNumber(newPageNumber);
     };
+
+    useEffect(() => {
+        dispatch(fetchPosts(pageNumber, postsPerPage));
+    }, [dispatch, pageNumber, postsPerPage]);
 
     return (
         <div>
@@ -57,6 +52,8 @@ const MainScreen = () => {
             {posts.reverse().map((post) => (
                 <Post key={post.id} post={post}/>
             ))}
+
+            {/* Добавьте компоненты для отображения пагинации */}
             <div>
                 <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>
                     Previous
