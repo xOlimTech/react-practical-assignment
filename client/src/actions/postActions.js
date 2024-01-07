@@ -8,6 +8,7 @@ import {
 } from '../services/const';
 import * as api from '../services/api';
 import axios from "axios";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
 // export const createPost = (postData) => async (dispatch, getState) => {
 //     try {
@@ -19,40 +20,20 @@ import axios from "axios";
 //         console.error('Error creating post:', error);
 //     }
 // };
-
-
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
-const createPost = createAsyncThunk('posts/createPost', async ({ title, username, file }) => {
-    const postResponse = await fetch(MAIN_URL + 'post/', {
+export const createPost = createAsyncThunk('posts/createPost', async ({ title, username }, { dispatch }) => {
+    const response = await fetch(MAIN_URL + `post/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             title,
-            username,
-        }),
+            username
+        })
     });
-    const postJson = await postResponse.json();
-
-    if (file) {
-        const formData = new FormData();
-        formData.append('picture', file);
-
-        const pictureResponse = await fetch(MAIN_URL + `post/${postJson.result.id}/picture`, {
-            method: 'POST',
-            body: formData,
-        });
-
-        const pictureJson = await pictureResponse.json();
-
-        return pictureJson.result;
-    } else {
-        return postJson.result;
-    }
+    const json = await response.json();
+    return json.result;
 });
-
 export const editPost = (postId, post) => async (dispatch, getState) => {
     try {
         const response = await api.updatePost(postId, post);
@@ -148,7 +129,14 @@ export const dislikePost = (postId) => async (dispatch, getState) => {
 
 
 
-
+export const uploadPostPicture = createAsyncThunk('posts/uploadPostPicture', async ({ postId, formData }, { dispatch }) => {
+    const response = await fetch(MAIN_URL + `post/${postId}/picture`, {
+        method: 'POST',
+        body: formData
+    });
+    const json = await response.json();
+    return json.result;
+});
 
 
 
