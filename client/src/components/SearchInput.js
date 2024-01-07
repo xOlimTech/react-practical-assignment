@@ -1,7 +1,6 @@
-// SearchInput.js
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchFilteredPosts, fetchPosts } from '../actions/postActions';
+import React, {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {fetchFilteredPosts, fetchPosts} from '../actions/postActions';
 
 const SearchInput = () => {
     const [searchText, setSearchText] = useState('');
@@ -9,10 +8,8 @@ const SearchInput = () => {
 
     useEffect(() => {
         if (searchText.trim() === '') {
-            // Если строка поиска пуста, загрузим все посты
             dispatch(fetchPosts());
         } else {
-            // Иначе выполним запрос на фильтрацию
             const delayDebounceFn = setTimeout(() => {
                 dispatch(fetchFilteredPosts(searchText));
             }, 300);

@@ -1,4 +1,3 @@
-// commentReducer.js
 import {
     CREATE_COMMENT,
     EDIT_COMMENT,
@@ -31,13 +30,11 @@ const commentReducer = (state = initialState, action) => {
                     comment.id === action.payload.id ? action.payload : comment
                 ),
             };
-
         case DELETE_COMMENT:
             return {
                 ...state,
                 comments: state.comments.filter((comment) => comment.id !== action.payload.id),
             };
-
         case LIKE_COMMENT:
         case DISLIKE_COMMENT:
             return {
@@ -46,7 +43,6 @@ const commentReducer = (state = initialState, action) => {
                     comment.id === action.payload.id ? action.payload : comment
                 ),
             };
-
         default:
             return state;
     }

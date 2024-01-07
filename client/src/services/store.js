@@ -1,7 +1,6 @@
-// store.js
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import rootReducer from '../reducers'; // Импорт вашего корневого редьюсера
+import rootReducer from '../reducers';
 
 const store = createStore(
     rootReducer,

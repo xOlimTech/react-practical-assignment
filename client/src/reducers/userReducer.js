@@ -1,4 +1,3 @@
-//userReducer.js
 import { LOGIN_USER, LOGOUT_USER } from '../services/const';
 
 const initialState = {

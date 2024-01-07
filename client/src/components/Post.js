@@ -1,6 +1,5 @@
-// Post.js
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
     editPost,
     deletePostAction,
@@ -12,12 +11,11 @@ import {
     editComment,
     deleteComment,
 } from '../actions/commentActions';
-import { MAIN_URL } from '../services/const';
+import {MAIN_URL} from '../services/const';
 
-const Post = ({ post }) => {
+const Post = ({post}) => {
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
-
     const [isEditing, setIsEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(post.title);
     const [commentText, setCommentText] = useState('');
@@ -39,7 +37,6 @@ const Post = ({ post }) => {
             if (file) {
                 const formData = new FormData();
                 formData.append('picture', file);
-
                 const pictureResponse = await fetch(
                     `${MAIN_URL}post/${post.id}/picture`,
                     {
@@ -47,17 +44,13 @@ const Post = ({ post }) => {
                         body: formData,
                     }
                 );
-
                 if (!pictureResponse.ok) {
-                    throw new Error(
-                        `Failed to upload picture: ${pictureResponse.status}`
-                    );
+                    throw new Error(`Failed to upload picture: ${pictureResponse.status}`)
                 }
             }
-
             const response = await fetch(`${MAIN_URL}post/${post.id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     title: editedTitle,
                     likes: post.likes,
@@ -81,12 +74,40 @@ const Post = ({ post }) => {
         dispatch(deletePostAction(post.id));
     };
 
+    const like = () => {
+        const index = post.likes.findIndex(author => author === currentUser);
+        const tempLikes = [...post.likes];
+        tempLikes.splice(index, 1);
+        dispatch(editPost(post.id, {likes: tempLikes}));
+    };
+
+    const dislike = () => {
+        const index = post.dislikes.findIndex(author => author === currentUser);
+        const tempDislikes = [...post.dislikes];
+        tempDislikes.splice(index, 1);
+        dispatch(editPost(post.id, {dislikes: tempDislikes}));
+    };
+
     const handleLike = () => {
-        dispatch(likePost(post.id));
+        if (post.likes.includes(currentUser)) {
+            like();
+        } else {
+            if (post.dislikes.includes(currentUser)) {
+                dislike();
+            }
+            dispatch(likePost(post.id));
+        }
     };
 
     const handleDislike = () => {
-        dispatch(dislikePost(post.id));
+        if (post.dislikes.includes(currentUser)) {
+            dislike();
+        } else {
+            if (post.likes.includes(currentUser)) {
+                like();
+            }
+            dispatch(dislikePost(post.id));
+        }
     };
 
     const handleComment = () => {
@@ -108,7 +129,7 @@ const Post = ({ post }) => {
         try {
             const response = await fetch(`${MAIN_URL}comment/${editingCommentId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     text: commentText,
                 }),
@@ -144,14 +165,14 @@ const Post = ({ post }) => {
                         value={editedTitle}
                         onChange={(e) => setEditedTitle(e.target.value)}
                     />
-                    <input type="file" onChange={handleFileChange} />
+                    <input type="file" onChange={handleFileChange}/>
                     <button onClick={handleSaveEdit}>Save</button>
                     <button onClick={handleCancelEdit}>Cancel</button>
                 </>
             ) : (
                 <>
                     <h3>{post.title}</h3>
-                    {post.imageSrc && <img src={post.imageSrc} alt="Post" />}
+                    {post.imageSrc && <img src={post.imageSrc} alt="Post"/>}
                     <p>Author: {post.username}</p>
                     <p>Likes: {post.likes.length}</p>
                     <p>Dislikes: {post.dislikes.length}</p>
@@ -173,17 +194,13 @@ const Post = ({ post }) => {
                                     </p>
                                     {currentUser === comment.username && (
                                         <>
-                                            <button
-                                                onClick={() =>
-                                                    handleEditComment(comment.id, comment.text)
-                                                }
-                                            >
-                                                Edit
+                                            <button onClick={() =>
+                                                handleEditComment(comment.id, comment.text)
+                                            }
+                                            > Edit
                                             </button>
-                                            <button
-                                                onClick={() => handleDeleteComment(comment.id)}
-                                            >
-                                                Delete
+                                            <button onClick={() => handleDeleteComment(comment.id)}
+                                            > Delete
                                             </button>
                                         </>
                                     )}
@@ -208,5 +225,4 @@ const Post = ({ post }) => {
         </div>
     );
 };
-
 export default Post;

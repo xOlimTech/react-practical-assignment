@@ -1,4 +1,3 @@
-// Modal.js
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost, uploadPostPicture } from '../actions/postActions';
@@ -50,12 +49,10 @@ const Modal = ({ isOpen, onClose }) => {
                     onChange={handleFileChange}
                 />
             </div>
-
             <button onClick={handleSave}>Save</button>
             <button onClick={onClose}>Cancel</button>
         </div>
     );
 };
-
 export default Modal;
 

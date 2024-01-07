@@ -1,33 +1,3 @@
-// // commentActions.js
-// import {
-//     CREATE_COMMENT,
-//     EDIT_COMMENT,
-//     DELETE_COMMENT,
-//     LIKE_COMMENT,
-//     DISLIKE_COMMENT,
-// } from '../services/actionTypes';
-
-//
-// export const likeCommentAction = (commentId) => async (dispatch) => {
-//     try {
-//         // Здесь вызывайте соответствующий API-метод для лайка комментария
-//         const response = await api.likeComment(commentId);
-//         dispatch({ type: LIKE_COMMENT, payload: response });
-//     } catch (error) {
-//         console.error('Error liking comment:', error);
-//     }
-// };
-//
-// export const dislikeCommentAction = (commentId) => async (dispatch) => {
-//     try {
-//         // Здесь вызывайте соответствующий API-метод для дизлайка комментария
-//         const response = await api.dislikeComment(commentId);
-//         dispatch({ type: DISLIKE_COMMENT, payload: response });
-//     } catch (error) {
-//         console.error('Error disliking comment:', error);
-//     }
-// };
-// actions/commentActions.js
 import axios from 'axios';
 import {DELETE_COMMENT, EDIT_COMMENT, MAIN_URL} from '../services/const';
 import {fetchPosts} from "./postActions";

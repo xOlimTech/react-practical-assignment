@@ -48,14 +48,10 @@ const MainScreen = () => {
             <button onClick={openModal}>Create Post</button>
             <button onClick={handleLogout}>Logout</button>
             <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleCreatePost}/>
-
-            <SearchInput /> {/* Добавили компонент поиска */}
-
-            <p>All Posts: {posts.length}</p>
+            <SearchInput/>
             {posts.map((post) => (
                 <Post key={post.id} post={post}/>
             ))}
-
             <div>
                 <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>
                     Previous
@@ -68,5 +64,4 @@ const MainScreen = () => {
         </div>
     );
 };
-
 export default MainScreen;

@@ -1,4 +1,3 @@
-// postReducer.js
 import {
     CREATE_POST,
     EDIT_POST,
