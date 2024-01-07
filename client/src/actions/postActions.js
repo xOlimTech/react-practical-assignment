@@ -61,45 +61,35 @@ export const dislikePostAction = (postId) => async (dispatch) => {
     }
 };
 
-// export const fetchPosts = () => async (dispatch) => {
-//     try {
-//         const response = await axios.get(MAIN_URL + `post/`);
-//         if (response.data.success) {
-//             dispatch({
-//                 type: FETCH_POSTS_SUCCESS,
-//                 payload: response.data.result,
-//             });
-//         } else {
-//             console.error('Ошибка при получении постов:', response.data.error);
-//         }
-//     } catch (error) {
-//         console.error('Ошибка при выполнении запроса:', error.message);
-//     }
-// };
-// export const fetchPosts = (pageNumber, postsPerPage) => async (dispatch) => {
-//     try {
-//         const response = await axios.get(MAIN_URL + `post/page/${pageNumber}?perPage=${postsPerPage}`);
-//         if (response.data.success) {
-//             dispatch({
-//                 type: FETCH_POSTS_SUCCESS,
-//                 payload: response.data.result,
-//             });
-//         } else {
-//             console.error('Error when receiving posts:', response.data.error);
-//         }
-//     } catch (error) {
-//         console.error('Error during query execution:', error.message);
-//     }
-// };
+
+export const fetchFilteredPosts = (keyword) => async (dispatch) => {
+    try {
+        if (keyword.trim() === '') {
+            dispatch(fetchPosts());
+        } else {
+            const response = await axios.get(MAIN_URL + `post/search/${keyword}`);
+            if (response.data.success) {
+                dispatch({
+                    type: FETCH_POSTS_SUCCESS,
+                    payload: response.data.result,
+                });
+            } else {
+                console.error('Error when receiving filtered posts:', response.data.error);
+            }
+        }
+    } catch (error) {
+        console.error('Error during query execution:', error.message);
+    }
+};
+
+
 export const fetchPosts = (pageNumber, postsPerPage) => async (dispatch) => {
     try {
         let url = MAIN_URL + `post/`;
         if (pageNumber && postsPerPage) {
             url = MAIN_URL + `post/page/${pageNumber}?perPage=${postsPerPage}`;
         }
-
         const response = await axios.get(url);
-
         if (response.data.success) {
             dispatch({
                 type: FETCH_POSTS_SUCCESS,

@@ -4,6 +4,7 @@ import Post from './Post';
 import Modal from './Modal';
 import {createPost, fetchPosts} from '../actions/postActions';
 import {logoutUser} from "../actions/userActions";
+import SearchInput from "./SearchInput";
 
 const MainScreen = () => {
     const dispatch = useDispatch();
@@ -48,12 +49,13 @@ const MainScreen = () => {
             <button onClick={handleLogout}>Logout</button>
             <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleCreatePost}/>
 
+            <SearchInput /> {/* Добавили компонент поиска */}
+
             <p>All Posts: {posts.length}</p>
             {posts.reverse().map((post) => (
                 <Post key={post.id} post={post}/>
             ))}
 
-            {/* Добавьте компоненты для отображения пагинации */}
             <div>
                 <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>
                     Previous
@@ -63,7 +65,6 @@ const MainScreen = () => {
                     Next
                 </button>
             </div>
-
         </div>
     );
 };
