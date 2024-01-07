@@ -1,7 +1,17 @@
+// Post.js
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editPost, deletePostAction, likePost, dislikePost } from '../actions/postActions';
-import { createComment, editComment, deleteComment } from '../actions/commentActions';
+import {
+    editPost,
+    deletePostAction,
+    likePost,
+    dislikePost,
+} from '../actions/postActions';
+import {
+    createComment,
+    editComment,
+    deleteComment,
+} from '../actions/commentActions';
 import { MAIN_URL } from '../services/const';
 
 const Post = ({ post }) => {
@@ -12,6 +22,7 @@ const Post = ({ post }) => {
     const [editedTitle, setEditedTitle] = useState(post.title);
     const [commentText, setCommentText] = useState('');
     const [editingCommentId, setEditingCommentId] = useState(null);
+    const [file, setFile] = useState(null);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -20,11 +31,31 @@ const Post = ({ post }) => {
     const handleCancelEdit = () => {
         setIsEditing(false);
         setEditedTitle(post.title);
+        setFile(null);
     };
 
     const handleSaveEdit = async () => {
         try {
-            const response = await fetch(MAIN_URL + `post/${post.id}`, {
+            if (file) {
+                const formData = new FormData();
+                formData.append('picture', file);
+
+                const pictureResponse = await fetch(
+                    `${MAIN_URL}post/${post.id}/picture`,
+                    {
+                        method: 'POST',
+                        body: formData,
+                    }
+                );
+
+                if (!pictureResponse.ok) {
+                    throw new Error(
+                        `Failed to upload picture: ${pictureResponse.status}`
+                    );
+                }
+            }
+
+            const response = await fetch(`${MAIN_URL}post/${post.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -33,9 +64,11 @@ const Post = ({ post }) => {
                     dislikes: post.dislikes,
                 }),
             });
+
             if (!response.ok) {
                 throw new Error(`Failed to edit post: ${response.status}`);
             }
+
             const updatedPost = await response.json();
             dispatch(editPost(updatedPost.result));
             setIsEditing(false);
@@ -73,16 +106,18 @@ const Post = ({ post }) => {
 
     const handleSaveEditComment = async () => {
         try {
-            const response = await fetch(MAIN_URL + `comment/${editingCommentId}`, {
+            const response = await fetch(`${MAIN_URL}comment/${editingCommentId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     text: commentText,
                 }),
             });
+
             if (!response.ok) {
                 throw new Error(`Failed to edit comment: ${response.status}`);
             }
+
             const updatedComment = await response.json();
             dispatch(editComment(updatedComment.result));
             setEditingCommentId(null);
@@ -95,6 +130,11 @@ const Post = ({ post }) => {
     const handleDeleteComment = (commentId) => {
         dispatch(deleteComment(commentId));
     };
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
     return (
         <div>
             {isEditing ? (
@@ -104,12 +144,14 @@ const Post = ({ post }) => {
                         value={editedTitle}
                         onChange={(e) => setEditedTitle(e.target.value)}
                     />
+                    <input type="file" onChange={handleFileChange} />
                     <button onClick={handleSaveEdit}>Save</button>
                     <button onClick={handleCancelEdit}>Cancel</button>
                 </>
             ) : (
                 <>
                     <h3>{post.title}</h3>
+                    {post.imageSrc && <img src={post.imageSrc} alt="Post" />}
                     <p>Author: {post.username}</p>
                     <p>Likes: {post.likes.length}</p>
                     <p>Dislikes: {post.dislikes.length}</p>
@@ -123,17 +165,30 @@ const Post = ({ post }) => {
                     )}
                     <div>
                         <h4>Comments:</h4>
-                        {post.comments && post.comments.map((comment) => (
-                            <div key={comment.id}>
-                                <p>{comment.username}: {comment.text}</p>
-                                {currentUser === comment.username && (
-                                    <>
-                                        <button onClick={() => handleEditComment(comment.id, comment.text)}>Edit</button>
-                                        <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                                    </>
-                                )}
-                            </div>
-                        ))}
+                        {post.comments &&
+                            post.comments.map((comment) => (
+                                <div key={comment.id}>
+                                    <p>
+                                        {comment.username}: {comment.text}
+                                    </p>
+                                    {currentUser === comment.username && (
+                                        <>
+                                            <button
+                                                onClick={() =>
+                                                    handleEditComment(comment.id, comment.text)
+                                                }
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteComment(comment.id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
                         <input
                             type="text"
                             value={commentText}

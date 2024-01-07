@@ -9,16 +9,49 @@ import {
 import * as api from '../services/api';
 import axios from "axios";
 
-export const createPost = (postData) => async (dispatch, getState) => {
-    try {
-        const post = {...postData};
-        const response = await api.createPost(post);
-        dispatch({type: CREATE_POST, payload: response});
-        dispatch(fetchPosts());
-    } catch (error) {
-        console.error('Error creating post:', error);
+// export const createPost = (postData) => async (dispatch, getState) => {
+//     try {
+//         const post = {...postData};
+//         const response = await api.createPost(post);
+//         dispatch({type: CREATE_POST, payload: response});
+//         dispatch(fetchPosts());
+//     } catch (error) {
+//         console.error('Error creating post:', error);
+//     }
+// };
+
+
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+const createPost = createAsyncThunk('posts/createPost', async ({ title, username, file }) => {
+    const postResponse = await fetch(MAIN_URL + 'post/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title,
+            username,
+        }),
+    });
+    const postJson = await postResponse.json();
+
+    if (file) {
+        const formData = new FormData();
+        formData.append('picture', file);
+
+        const pictureResponse = await fetch(MAIN_URL + `post/${postJson.result.id}/picture`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        const pictureJson = await pictureResponse.json();
+
+        return pictureJson.result;
+    } else {
+        return postJson.result;
     }
-};
+});
 
 export const editPost = (postId, post) => async (dispatch, getState) => {
     try {

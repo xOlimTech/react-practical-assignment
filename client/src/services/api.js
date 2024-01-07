@@ -9,13 +9,26 @@ const createPost = async (post) => {
     const response = await makeRequest(url, method, post);
     return response.result;
 };
-
-// const updatePost = async (postId, updates) => {
-//     const url = MAIN_URL + `post/${postId}`;
-//     const method = 'PUT';
-//     return makeRequest(url, method, updates);
+// const createPost = async (formData) => {
+//     const url = MAIN_URL + 'post/';
+//     const method = 'POST';
+//     const options = {
+//         method,
+//         headers,
+//         body: formData,
+//     };
+//
+//     try {
+//         const response = await fetch(url, options);
+//         if (!response.ok) {
+//             throw new Error(`Request failed with status ${response.status}`);
+//         }
+//         return response.json();
+//     } catch (error) {
+//         throw new Error(`Error making request: ${error.message}`);
+//     }
 // };
-// api.js
+
 const updatePost = async (postId, updatedData) => {
     const options = {
         method: 'PUT',
