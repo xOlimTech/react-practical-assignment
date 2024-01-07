@@ -3,8 +3,6 @@ import {
     CREATE_POST,
     EDIT_POST,
     DELETE_POST,
-    LIKE_POST,
-    DISLIKE_POST,
     FETCH_POSTS_SUCCESS,
     MAIN_URL
 } from '../services/const';
@@ -43,23 +41,86 @@ export const deletePostAction = (postId) => async (dispatch, getState) => {
     }
 };
 
-export const likePostAction = (postId) => async (dispatch) => {
+// export const likePostAction = (postId) => async (dispatch) => {
+//     try {
+//         const response = await api.likePost(postId);
+//         dispatch({type: LIKE_POST, payload: response});
+//     } catch (error) {
+//         console.error('Error liking post:', error);
+//     }
+// };
+//
+// export const dislikePostAction = (postId) => async (dispatch) => {
+//     try {
+//         const response = await api.dislikePost(postId);
+//         dispatch({type: DISLIKE_POST, payload: response});
+//     } catch (error) {
+//         console.error('Error disliking post:', error);
+//     }
+// };
+// postActions.js
+export const likePost = (postId) => async (dispatch, getState) => {
     try {
-        const response = await api.likePost(postId);
-        dispatch({type: LIKE_POST, payload: response});
+        const { user } = getState();
+        const post = await api.getPost(postId);
+
+        let updatedLikes = post.likes ? [...post.likes] : [];
+
+        if (updatedLikes.includes(user.currentUser)) {
+            updatedLikes = updatedLikes.filter((username) => username !== user.currentUser);
+        } else {
+            updatedLikes.push(user.currentUser);
+        }
+
+        const response = await api.updatePost(postId, { likes: updatedLikes });
+
+        dispatch({
+            type: EDIT_POST,
+            payload: response,
+        });
+        dispatch(fetchPosts());
     } catch (error) {
         console.error('Error liking post:', error);
     }
 };
 
-export const dislikePostAction = (postId) => async (dispatch) => {
+export const dislikePost = (postId) => async (dispatch, getState) => {
     try {
-        const response = await api.dislikePost(postId);
-        dispatch({type: DISLIKE_POST, payload: response});
+        const { user } = getState();
+        const post = await api.getPost(postId);
+
+        let updatedDislikes = post.dislikes ? [...post.dislikes] : [];
+
+        if (updatedDislikes.includes(user.currentUser)) {
+            updatedDislikes = updatedDislikes.filter((username) => username !== user.currentUser);
+        } else {
+            updatedDislikes.push(user.currentUser);
+        }
+
+        const response = await api.updatePost(postId, { dislikes: updatedDislikes });
+
+        dispatch({
+            type: EDIT_POST,
+            payload: response,
+        });
+        dispatch(fetchPosts());
     } catch (error) {
         console.error('Error disliking post:', error);
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export const fetchFilteredPosts = (keyword) => async (dispatch) => {

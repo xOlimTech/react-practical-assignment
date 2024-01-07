@@ -10,11 +10,25 @@ const createPost = async (post) => {
     return response.result;
 };
 
-const updatePost = async (postId, updates) => {
-    const url = MAIN_URL + `post/${postId}`;
-    const method = 'PUT';
-    return makeRequest(url, method, updates);
+// const updatePost = async (postId, updates) => {
+//     const url = MAIN_URL + `post/${postId}`;
+//     const method = 'PUT';
+//     return makeRequest(url, method, updates);
+// };
+// api.js
+const updatePost = async (postId, updatedData) => {
+    const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData),
+    };
+    const response = await fetch(MAIN_URL + `post/${postId}`, options);
+    if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+    }
+    return response.json();
 };
+
 
 const deletePost = async (postId, options) => {
     const url = MAIN_URL + `post/${postId}`;

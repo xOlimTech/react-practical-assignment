@@ -52,7 +52,7 @@ const MainScreen = () => {
             <SearchInput /> {/* Добавили компонент поиска */}
 
             <p>All Posts: {posts.length}</p>
-            {posts.reverse().map((post) => (
+            {posts.map((post) => (
                 <Post key={post.id} post={post}/>
             ))}
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editPost, deletePostAction, likePostAction, dislikePostAction } from '../actions/postActions';
+import { editPost, deletePostAction, likePost, dislikePost } from '../actions/postActions';
 import { createComment, editComment, deleteComment } from '../actions/commentActions';
 import { MAIN_URL } from '../services/const';
 
@@ -49,11 +49,11 @@ const Post = ({ post }) => {
     };
 
     const handleLike = () => {
-        dispatch(likePostAction(post.id));
+        dispatch(likePost(post.id));
     };
 
     const handleDislike = () => {
-        dispatch(dislikePostAction(post.id));
+        dispatch(dislikePost(post.id));
     };
 
     const handleComment = () => {
