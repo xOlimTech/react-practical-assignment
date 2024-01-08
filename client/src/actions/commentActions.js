@@ -37,3 +37,39 @@ export const deleteComment = (commentId) => async (dispatch) => {
         console.error('Error deleting comment:', error);
     }
 };
+
+export const likeComment = (commentId) => async (dispatch, getState) => {
+    try {
+        const { user } = getState(); // Предположим, что у вас есть редюсер user, где хранится информация о текущем пользователе
+        const response = await editComment(commentId, {
+            likes: user.currentUser ? [user.currentUser] : [],
+        });
+        dispatch({ type: EDIT_COMMENT, payload: response });
+        // Добавьте необходимые действия после успешного лайка
+    } catch (error) {
+        console.error('Error liking comment:', error);
+    }
+};
+
+export const dislikeComment = (commentId) => async (dispatch, getState) => {
+    try {
+        const { user } = getState(); // Предположим, что у вас есть редюсер user, где хранится информация о текущем пользователе
+        const response = await editComment(commentId, {
+            dislikes: user.currentUser ? [user.currentUser] : [],
+        });
+        dispatch({ type: EDIT_COMMENT, payload: response });
+        // Добавьте необходимые действия после успешного дизлайка
+    } catch (error) {
+        console.error('Error disliking comment:', error);
+    }
+};
+//
+// // Проверим и скорректируем deleteCommentAction
+// export const deleteCommentAction = (commentId) => async (dispatch) => {
+//     try {
+//         const response = await api.deleteComment(commentId); // Предположим, что есть метод для удаления комментария
+//         dispatch({ type: DELETE_COMMENT, payload: response });
+//     } catch (error) {
+//         console.error('Error deleting comment:', error);
+//     }
+// };

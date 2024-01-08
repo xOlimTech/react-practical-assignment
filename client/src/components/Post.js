@@ -16,6 +16,7 @@ import {MAIN_URL} from '../services/const';
 const Post = ({post}) => {
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedTitle, setEditedTitle] = useState(post.title);
     const [commentText, setCommentText] = useState('');
@@ -195,13 +196,11 @@ const Post = ({post}) => {
                                     {currentUser === comment.username && (
                                         <>
                                             <button onClick={() =>
-                                                handleEditComment(comment.id, comment.text)
-                                            }
-                                            > Edit
-                                            </button>
+                                                    handleEditComment(comment.id, comment.text)
+                                                }
+                                            > Edit </button>
                                             <button onClick={() => handleDeleteComment(comment.id)}
-                                            > Delete
-                                            </button>
+                                            > Delete </button>
                                         </>
                                     )}
                                 </div>
@@ -225,4 +224,5 @@ const Post = ({post}) => {
         </div>
     );
 };
+
 export default Post;

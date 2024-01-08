@@ -104,7 +104,41 @@ const deleteComment = async (commentId) => {
     const method = 'DELETE';
     return makeRequest(url, method);
 };
+export const likeComment = async (commentId) => {
+    try {
+        const response = await fetch(MAIN_URL + `comment/like/${commentId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+        });
 
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error('Error liking comment:', error);
+        throw error;
+    }
+};
+
+export const dislikeComment = async (commentId) => {
+    try {
+        const response = await fetch(MAIN_URL + `comment/dislike/${commentId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error('Error disliking comment:', error);
+        throw error;
+    }
+};
 // const handleResponse = async (response) => {
 //     if (!response.ok) {
 //         throw new Error(`Error: ${response.status} - ${response.statusText}`);
