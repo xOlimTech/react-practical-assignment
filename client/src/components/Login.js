@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {loginUser} from "../actions/userActions";
+import '../bootstrap.min.css';
 
 
 const Login = () => {
@@ -14,19 +15,27 @@ const Login = () => {
             alert('Please enter a valid username');
         }
     }
-
     return (
-        <div>
-            <h1>Login</h1>
-            <label htmlFor="username">Username: </label>
-            <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <button onClick={handleLogin}>Login</button>
+        <div className="container d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+            <form className="form-inline">
+                <div className="form-group mx-sm-3 mb-2">
+                    <label htmlFor="inputPassword2" className="sr-only">Username: </label>
+                    <input
+                        type="username"
+                        className="form-control"
+                        id="inputPassword2"
+                        placeholder="Enter your username"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary mb-2" onClick={handleLogin}>
+                    Login
+                </button>
+            </form>
         </div>
-    )
+    );
+
 }
 export default Login;

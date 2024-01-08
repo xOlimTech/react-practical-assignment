@@ -175,10 +175,8 @@ const Post = ({post}) => {
                     <h3>{post.title}</h3>
                     {post.imageSrc && <img src={post.imageSrc} alt="Post"/>}
                     <p>Author: {post.username}</p>
-                    <p>Likes: {post.likes.length}</p>
-                    <p>Dislikes: {post.dislikes.length}</p>
-                    <button onClick={handleLike}>Like</button>
-                    <button onClick={handleDislike}>Dislike</button>
+                    <button className="btn btn-outline-success btn-sm ml-2" onClick={handleLike}>Like {post.likes.length}</button>
+                    <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleDislike}>Dislike {post.dislikes.length}</button>
                     {currentUser === post.username && (
                         <>
                             <button onClick={handleEdit}>Edit</button>
@@ -195,12 +193,12 @@ const Post = ({post}) => {
                                     </p>
                                     {currentUser === comment.username && (
                                         <>
-                                            <button onClick={() =>
+                                            <button className="btn btn-outline-info btn-sm ml-2" onClick={() =>
                                                     handleEditComment(comment.id, comment.text)
                                                 }
-                                            > Edit </button>
-                                            <button onClick={() => handleDeleteComment(comment.id)}
-                                            > Delete </button>
+                                            > Edit comment</button>
+                                            <button className="btn btn-outline-danger btn-sm ml-2" onClick={() => handleDeleteComment(comment.id)}
+                                            > Delete comment</button>
                                         </>
                                     )}
                                 </div>
@@ -216,7 +214,7 @@ const Post = ({post}) => {
                                 <button onClick={() => setEditingCommentId(null)}>Cancel</button>
                             </>
                         ) : (
-                            <button onClick={handleComment}>Add comment</button>
+                            <button className="btn btn-warning ml-2" onClick={handleComment}>Add comment</button>
                         )}
                     </div>
                 </>
