@@ -33,7 +33,6 @@ const Modal = ({isOpen, onClose}) => {
     return (
         <div style={{display: isOpen ? 'block' : 'none'}} className="input-group">
             <div className="input-group">
-                {/*<label htmlFor="postTitle">Title: </label>*/}
                 <span className="input-group-text" id="addon-wrapping">Title: </span>
                 <input className="form-control"
                        type="text"
@@ -57,7 +56,8 @@ const Modal = ({isOpen, onClose}) => {
                         style={{display: 'none'}}
                     />
                 </label>
-            </div><br/>
+            </div>
+            <br/>
             <button variant="primary" className="btn btn-primary ml-2" onClick={handleSave}>Save</button>
             <button variant="secondary" className="btn btn-danger ml-2" onClick={onClose}>Cancel</button>
             <hr/>
