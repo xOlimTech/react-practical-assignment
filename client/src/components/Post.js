@@ -214,9 +214,9 @@ const Post = ({post}) => {
                                 <button onClick={() => setEditingCommentId(null)}>Cancel</button>
                             </>
                         ) : (
-                            <button className="btn btn-warning ml-2" onClick={handleComment}>Add comment</button>
+                            <button className="btn btn-warning ml-2 mt-2" onClick={handleComment}>Add comment</button>
                         )}
-                    </div>
+                    </div><hr/>
                 </>
             )}
         </div>

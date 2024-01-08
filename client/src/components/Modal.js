@@ -36,10 +36,10 @@ const Modal = ({isOpen, onClose}) => {
                 {/*<label htmlFor="postTitle">Title: </label>*/}
                 <span className="input-group-text" id="addon-wrapping">Title: </span>
                 <input className="form-control"
-                    type="text"
-                    id="postTitle"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                       type="text"
+                       id="postTitle"
+                       value={title}
+                       onChange={(e) => setTitle(e.target.value)}
                 />
                 <label htmlFor="postPicture" className="btn btn-outline-primary ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -57,10 +57,10 @@ const Modal = ({isOpen, onClose}) => {
                         style={{display: 'none'}}
                     />
                 </label>
-            </div>
+            </div><br/>
             <button variant="primary" className="btn btn-primary ml-2" onClick={handleSave}>Save</button>
             <button variant="secondary" className="btn btn-danger ml-2" onClick={onClose}>Cancel</button>
-
+            <hr/>
         </div>
     );
 };
