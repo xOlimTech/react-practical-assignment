@@ -7,6 +7,7 @@ import {
 import * as api from '../services/api';
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {getPost, updatePost} from "../services/api";
 
 export const createPost = createAsyncThunk('posts/createPost', async ({title, username}, {dispatch}) => {
     const response = await fetch(MAIN_URL + `post/`, {
@@ -43,17 +44,61 @@ export const deletePostAction = (postId) => async (dispatch, getState) => {
     }
 };
 
+// export const likePost = (postId) => async (dispatch, getState) => {
+//     try {
+//         const {user} = getState();
+//         const post = await api.getPost(postId);
+//         let updatedLikes = post.likes ? [...post.likes] : [];
+//         if (updatedLikes.includes(user.currentUser)) {
+//             updatedLikes = updatedLikes.filter((username) => username !== user.currentUser);
+//         } else {
+//             updatedLikes.push(user.currentUser);
+//         }
+//         const response = await api.updatePost(postId, {likes: updatedLikes});
+//         dispatch({
+//             type: EDIT_POST,
+//             payload: response,
+//         });
+//         dispatch(fetchPosts());
+//     } catch (error) {
+//         console.error('Error liking post:', error);
+//     }
+// };
+//
+// export const dislikePost = (postId) => async (dispatch, getState) => {
+//     try {
+//         const {user} = getState();
+//         const post = await api.getPost(postId);
+//         let updatedDislikes = post.dislikes ? [...post.dislikes] : [];
+//         if (updatedDislikes.includes(user.currentUser)) {
+//             updatedDislikes = updatedDislikes.filter((username) => username !== user.currentUser);
+//         } else {
+//             updatedDislikes.push(user.currentUser);
+//         }
+//         const response = await api.updatePost(postId, {dislikes: updatedDislikes});
+//         dispatch({
+//             type: EDIT_POST,
+//             payload: response,
+//         });
+//         dispatch(fetchPosts());
+//     } catch (error) {
+//         console.error('Error disliking post:', error);
+//     }
+// };
 export const likePost = (postId) => async (dispatch, getState) => {
     try {
-        const {user} = getState();
+        const { user } = getState();
         const post = await api.getPost(postId);
-        let updatedLikes = post.likes ? [...post.likes] : [];
-        if (updatedLikes.includes(user.currentUser)) {
-            updatedLikes = updatedLikes.filter((username) => username !== user.currentUser);
-        } else {
-            updatedLikes.push(user.currentUser);
-        }
-        const response = await api.updatePost(postId, {likes: updatedLikes});
+
+        const updatedLikes = post.likes.includes(user.currentUser)
+            ? post.likes.filter(author => author !== user.currentUser)
+            : [...post.likes, user.currentUser];
+
+        const updatedDislikes = post.dislikes.includes(user.currentUser)
+            ? post.dislikes.filter(author => author !== user.currentUser)
+            : [...post.dislikes];
+
+        const response = await api.updatePost(postId, { likes: updatedLikes, dislikes: updatedDislikes });
         dispatch({
             type: EDIT_POST,
             payload: response,
@@ -66,15 +111,18 @@ export const likePost = (postId) => async (dispatch, getState) => {
 
 export const dislikePost = (postId) => async (dispatch, getState) => {
     try {
-        const {user} = getState();
+        const { user } = getState();
         const post = await api.getPost(postId);
-        let updatedDislikes = post.dislikes ? [...post.dislikes] : [];
-        if (updatedDislikes.includes(user.currentUser)) {
-            updatedDislikes = updatedDislikes.filter((username) => username !== user.currentUser);
-        } else {
-            updatedDislikes.push(user.currentUser);
-        }
-        const response = await api.updatePost(postId, {dislikes: updatedDislikes});
+
+        const updatedLikes = post.likes.includes(user.currentUser)
+            ? post.likes.filter(author => author !== user.currentUser)
+            : [...post.likes];
+
+        const updatedDislikes = post.dislikes.includes(user.currentUser)
+            ? post.dislikes.filter(author => author !== user.currentUser)
+            : [...post.dislikes, user.currentUser];
+
+        const response = await api.updatePost(postId, { likes: updatedLikes, dislikes: updatedDislikes });
         dispatch({
             type: EDIT_POST,
             payload: response,
@@ -84,6 +132,8 @@ export const dislikePost = (postId) => async (dispatch, getState) => {
         console.error('Error disliking post:', error);
     }
 };
+
+
 
 export const uploadPostPicture = createAsyncThunk('posts/uploadPostPicture', async ({postId, formData}, {dispatch}) => {
     const response = await fetch(MAIN_URL + `post/${postId}/picture`, {

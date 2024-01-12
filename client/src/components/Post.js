@@ -75,41 +75,82 @@ const Post = ({post}) => {
         dispatch(deletePostAction(post.id));
     };
 
+    // const like = () => {
+    //     const index = post.likes.findIndex(author => author === currentUser);
+    //     const tempLikes = [...post.likes];
+    //     tempLikes.splice(index, 1);
+    //     dispatch(editPost(post.id, {likes: tempLikes}));
+    // };
+    //
+    // const dislike = () => {
+    //     const index = post.dislikes.findIndex(author => author === currentUser);
+    //     const tempDislikes = [...post.dislikes];
+    //     tempDislikes.splice(index, 1);
+    //     dispatch(editPost(post.id, {dislikes: tempDislikes}));
+    // };
+    //
+    // const handleLike = () => {
+    //     if (post.likes.includes(currentUser)) {
+    //         like();
+    //     } else {
+    //         if (post.dislikes.includes(currentUser)) {
+    //             dislike();
+    //         }
+    //         dispatch(likePost(post.id));
+    //     }
+    // };
+    //
+    // const handleDislike = () => {
+    //     if (post.dislikes.includes(currentUser)) {
+    //         dislike();
+    //     } else {
+    //         if (post.likes.includes(currentUser)) {
+    //             like();
+    //         }
+    //         dispatch(dislikePost(post.id));
+    //     }
+    // };
     const like = () => {
-        const index = post.likes.findIndex(author => author === currentUser);
-        const tempLikes = [...post.likes];
-        tempLikes.splice(index, 1);
-        dispatch(editPost(post.id, {likes: tempLikes}));
+        const updatedLikes = post.likes.includes(currentUser)
+            ? post.likes.filter(author => author !== currentUser)
+            : [...post.likes, currentUser];
+
+        const updatedDislikes = post.dislikes.includes(currentUser)
+            ? post.dislikes.filter(author => author !== currentUser)
+            : [...post.dislikes];
+
+        dispatch(editPost(post.id, { likes: updatedLikes, dislikes: updatedDislikes }));
     };
 
     const dislike = () => {
-        const index = post.dislikes.findIndex(author => author === currentUser);
-        const tempDislikes = [...post.dislikes];
-        tempDislikes.splice(index, 1);
-        dispatch(editPost(post.id, {dislikes: tempDislikes}));
+        const updatedLikes = post.likes.includes(currentUser)
+            ? post.likes.filter(author => author !== currentUser)
+            : [...post.likes];
+
+        const updatedDislikes = post.dislikes.includes(currentUser)
+            ? post.dislikes.filter(author => author !== currentUser)
+            : [...post.dislikes, currentUser];
+
+        dispatch(editPost(post.id, { likes: updatedLikes, dislikes: updatedDislikes }));
     };
+
 
     const handleLike = () => {
         if (post.likes.includes(currentUser)) {
-            like();
+            dislike();
         } else {
-            if (post.dislikes.includes(currentUser)) {
-                dislike();
-            }
-            dispatch(likePost(post.id));
+            like();
         }
     };
 
     const handleDislike = () => {
         if (post.dislikes.includes(currentUser)) {
-            dislike();
+            like();
         } else {
-            if (post.likes.includes(currentUser)) {
-                like();
-            }
-            dispatch(dislikePost(post.id));
+            dislike();
         }
     };
+
 
     const handleComment = () => {
         const commentData = {
