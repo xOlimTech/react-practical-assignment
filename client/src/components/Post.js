@@ -180,14 +180,14 @@ const Post = ({post}) => {
         <div>
             {isEditing ? (
                 <>
-                    <input
+                    <input className="input-group-text"
                         type="text"
                         value={editedTitle}
                         onChange={(e) => setEditedTitle(e.target.value)}
                     />
                     <input type="file" onChange={handleFileChange}/>
-                    <button onClick={handleSaveEdit}>Save</button>
-                    <button onClick={handleCancelEdit}>Cancel</button>
+                    <button className="btn btn-outline-info btn-sm ml-2" onClick={handleSaveEdit}>Save</button>
+                    <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleCancelEdit}>Cancel</button>
                 </>
             ) : (
                 <>
@@ -198,8 +198,8 @@ const Post = ({post}) => {
                     <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleDislike}>Dislike {post.dislikes.length}</button>
                     {currentUser === post.username && (
                         <>
-                            <button onClick={handleEdit}>Edit</button>
-                            <button onClick={handleDelete}>Delete</button>
+                            <button className="btn btn-outline-info btn-sm ml-2" onClick={handleEdit}>Edit</button>
+                            <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleDelete}>Delete</button>
                         </>
                     )}
                     <div>
