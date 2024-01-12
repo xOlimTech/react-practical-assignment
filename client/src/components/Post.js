@@ -75,46 +75,60 @@ const Post = ({post}) => {
         dispatch(deletePostAction(post.id));
     };
 
-    const like = () => {
-        const updatedLikes = post.likes.includes(currentUser)
-            ? post.likes.filter(author => author !== currentUser)
-            : [...post.likes, currentUser];
-
-        const updatedDislikes = post.dislikes.includes(currentUser)
-            ? post.dislikes.filter(author => author !== currentUser)
-            : [...post.dislikes];
-
-        dispatch(editPost(post.id, {likes: updatedLikes, dislikes: updatedDislikes}));
-    };
-
-    const dislike = () => {
-        const updatedLikes = post.likes.includes(currentUser)
-            ? post.likes.filter(author => author !== currentUser)
-            : [...post.likes];
-
-        const updatedDislikes = post.dislikes.includes(currentUser)
-            ? post.dislikes.filter(author => author !== currentUser)
-            : [...post.dislikes, currentUser];
-
-        dispatch(editPost(post.id, {likes: updatedLikes, dislikes: updatedDislikes}));
-    };
-
     const handleLike = () => {
-        if (post.likes.includes(currentUser)) {
-            dislike();
+        const isLikedByCurrentUser = post.likes && post.likes.includes(currentUser);
+        const isDislikedByCurrentUser = post.dislikes && post.dislikes.includes(currentUser);
+
+        if (isLikedByCurrentUser) {
+            dispatch(editPost(post.id, { likes: post.likes.filter(author => author !== currentUser) }));
         } else {
-            like();
+            dispatch(editPost(post.id, {
+                likes: [...(post.likes || []), currentUser],
+                dislikes: isDislikedByCurrentUser ? post.dislikes.filter(author => author !== currentUser) : (post.dislikes || []),
+            }));
         }
     };
 
     const handleDislike = () => {
-        if (post.dislikes.includes(currentUser)) {
-            like();
+        const isLikedByCurrentUser = post.likes && post.likes.includes(currentUser);
+        const isDislikedByCurrentUser = post.dislikes && post.dislikes.includes(currentUser);
+
+        if (isDislikedByCurrentUser) {
+            dispatch(editPost(post.id, { dislikes: post.dislikes.filter(author => author !== currentUser) }));
         } else {
-            dislike();
+            dispatch(editPost(post.id, {
+                dislikes: [...(post.dislikes || []), currentUser],
+                likes: isLikedByCurrentUser ? post.likes.filter(author => author !== currentUser) : (post.likes || []),
+            }));
         }
     };
 
+    const toggleLike = (isLike) => {
+        const likedArray = post.likes || [];
+        const dislikedArray = post.dislikes || [];
+
+        const updatedLikes = isLike
+            ? likedArray.includes(currentUser)
+                ? likedArray.filter(author => author !== currentUser)
+                : [...likedArray, currentUser]
+            : likedArray.filter(author => author !== currentUser);
+
+        const updatedDislikes = isLike
+            ? dislikedArray.filter(author => author !== currentUser)
+            : dislikedArray.includes(currentUser)
+                ? dislikedArray.filter(author => author !== currentUser)
+                : [...dislikedArray, currentUser];
+
+        dispatch(editPost(post.id, { likes: updatedLikes, dislikes: updatedDislikes }));
+    };
+
+    const like = () => {
+        toggleLike(true);
+    };
+
+    const dislike = () => {
+        toggleLike(false);
+    };
 
     const handleComment = () => {
         const commentData = {
@@ -180,10 +194,8 @@ const Post = ({post}) => {
                     <h3>{post.title}</h3>
                     {post.imageSrc && <img src={post.imageSrc} alt="Post"/>}
                     <p>Author: {post.username}</p>
-                    <button className="btn btn-outline-success btn-sm ml-2"
-                            onClick={handleLike}>Like {post.likes.length}</button>
-                    <button className="btn btn-outline-danger btn-sm ml-2"
-                            onClick={handleDislike}>Dislike {post.dislikes.length}</button>
+                    <button className="btn btn-outline-success btn-sm ml-2" onClick={handleLike}>Like {post.likes.length}</button>
+                    <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleDislike}>Dislike {post.dislikes.length}</button>
                     {currentUser === post.username && (
                         <>
                             <button onClick={handleEdit}>Edit</button>
@@ -201,14 +213,11 @@ const Post = ({post}) => {
                                     {currentUser === comment.username && (
                                         <>
                                             <button className="btn btn-outline-info btn-sm ml-2" onClick={() =>
-                                                handleEditComment(comment.id, comment.text)
-                                            }
-                                            > Edit comment
-                                            </button>
-                                            <button className="btn btn-outline-danger btn-sm ml-2"
-                                                    onClick={() => handleDeleteComment(comment.id)}
-                                            > Delete comment
-                                            </button>
+                                                    handleEditComment(comment.id, comment.text)
+                                                }
+                                            > Edit comment</button>
+                                            <button className="btn btn-outline-danger btn-sm ml-2" onClick={() => handleDeleteComment(comment.id)}
+                                            > Delete comment</button>
                                         </>
                                     )}
                                 </div>
@@ -226,8 +235,7 @@ const Post = ({post}) => {
                         ) : (
                             <button className="btn btn-warning ml-2 mt-2" onClick={handleComment}>Add comment</button>
                         )}
-                    </div>
-                    <hr/>
+                    </div><hr/>
                 </>
             )}
         </div>
