@@ -75,41 +75,6 @@ const Post = ({post}) => {
         dispatch(deletePostAction(post.id));
     };
 
-    // const like = () => {
-    //     const index = post.likes.findIndex(author => author === currentUser);
-    //     const tempLikes = [...post.likes];
-    //     tempLikes.splice(index, 1);
-    //     dispatch(editPost(post.id, {likes: tempLikes}));
-    // };
-    //
-    // const dislike = () => {
-    //     const index = post.dislikes.findIndex(author => author === currentUser);
-    //     const tempDislikes = [...post.dislikes];
-    //     tempDislikes.splice(index, 1);
-    //     dispatch(editPost(post.id, {dislikes: tempDislikes}));
-    // };
-    //
-    // const handleLike = () => {
-    //     if (post.likes.includes(currentUser)) {
-    //         like();
-    //     } else {
-    //         if (post.dislikes.includes(currentUser)) {
-    //             dislike();
-    //         }
-    //         dispatch(likePost(post.id));
-    //     }
-    // };
-    //
-    // const handleDislike = () => {
-    //     if (post.dislikes.includes(currentUser)) {
-    //         dislike();
-    //     } else {
-    //         if (post.likes.includes(currentUser)) {
-    //             like();
-    //         }
-    //         dispatch(dislikePost(post.id));
-    //     }
-    // };
     const like = () => {
         const updatedLikes = post.likes.includes(currentUser)
             ? post.likes.filter(author => author !== currentUser)
@@ -119,7 +84,7 @@ const Post = ({post}) => {
             ? post.dislikes.filter(author => author !== currentUser)
             : [...post.dislikes];
 
-        dispatch(editPost(post.id, { likes: updatedLikes, dislikes: updatedDislikes }));
+        dispatch(editPost(post.id, {likes: updatedLikes, dislikes: updatedDislikes}));
     };
 
     const dislike = () => {
@@ -131,9 +96,8 @@ const Post = ({post}) => {
             ? post.dislikes.filter(author => author !== currentUser)
             : [...post.dislikes, currentUser];
 
-        dispatch(editPost(post.id, { likes: updatedLikes, dislikes: updatedDislikes }));
+        dispatch(editPost(post.id, {likes: updatedLikes, dislikes: updatedDislikes}));
     };
-
 
     const handleLike = () => {
         if (post.likes.includes(currentUser)) {
@@ -216,8 +180,10 @@ const Post = ({post}) => {
                     <h3>{post.title}</h3>
                     {post.imageSrc && <img src={post.imageSrc} alt="Post"/>}
                     <p>Author: {post.username}</p>
-                    <button className="btn btn-outline-success btn-sm ml-2" onClick={handleLike}>Like {post.likes.length}</button>
-                    <button className="btn btn-outline-danger btn-sm ml-2" onClick={handleDislike}>Dislike {post.dislikes.length}</button>
+                    <button className="btn btn-outline-success btn-sm ml-2"
+                            onClick={handleLike}>Like {post.likes.length}</button>
+                    <button className="btn btn-outline-danger btn-sm ml-2"
+                            onClick={handleDislike}>Dislike {post.dislikes.length}</button>
                     {currentUser === post.username && (
                         <>
                             <button onClick={handleEdit}>Edit</button>
@@ -235,11 +201,14 @@ const Post = ({post}) => {
                                     {currentUser === comment.username && (
                                         <>
                                             <button className="btn btn-outline-info btn-sm ml-2" onClick={() =>
-                                                    handleEditComment(comment.id, comment.text)
-                                                }
-                                            > Edit comment</button>
-                                            <button className="btn btn-outline-danger btn-sm ml-2" onClick={() => handleDeleteComment(comment.id)}
-                                            > Delete comment</button>
+                                                handleEditComment(comment.id, comment.text)
+                                            }
+                                            > Edit comment
+                                            </button>
+                                            <button className="btn btn-outline-danger btn-sm ml-2"
+                                                    onClick={() => handleDeleteComment(comment.id)}
+                                            > Delete comment
+                                            </button>
                                         </>
                                     )}
                                 </div>
@@ -257,7 +226,8 @@ const Post = ({post}) => {
                         ) : (
                             <button className="btn btn-warning ml-2 mt-2" onClick={handleComment}>Add comment</button>
                         )}
-                    </div><hr/>
+                    </div>
+                    <hr/>
                 </>
             )}
         </div>
